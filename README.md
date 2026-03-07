@@ -77,3 +77,15 @@ git push -u origin main
 ## Included patches
 See `patches/` for full list (0005 to 0028).
 
+## License
+
+This repository contains patches and build scripts written by the author
+and is released under the BSD 3-Clause License.
+
+HEASoft itself is developed and distributed by NASA HEASARC and is
+licensed under its own license terms. Users must download the original
+HEASoft source from:
+
+https://heasarc.gsfc.nasa.gov/lheasoft/
+
+This repository does not redistribute HEASoft source code.
