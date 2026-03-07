@@ -36,3 +36,11 @@ Run:
 ```sh
 ./examples/test_heasoft.sh
 ```
+
+This smoke test now checks:
+- `HEADAS`, `PATH`, and `PFILES` sanity
+- FTOOLS read test on `pulsar_ephem_lib.fits`
+- non-interactive XSPEC startup/quit
+- `heasoftpy` import via Python
+
+Warnings are informational (for example missing `TCLLIBPATH` tuning), while failures indicate broken setup.
