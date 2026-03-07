@@ -5,10 +5,10 @@ After compiling HEASoft on FreeBSD ARM64, run the following checks to confirm th
 ## FTOOLS test
 
 ```sh
-ftlist "$HEADAS/refdata/eftest.fits"
+ftlist "$HEADAS/refdata/pulsar_ephem_lib.fits"
 ```
 
-Expected output includes FITS header information.
+Expected output includes FITS HDU and table metadata.
 
 ## XSPEC test
 
