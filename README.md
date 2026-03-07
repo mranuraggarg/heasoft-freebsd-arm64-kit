@@ -9,9 +9,6 @@ It contains:
 
 It intentionally does **not** contain the full HEASoft source tree.
 
-## Recommended GitHub repo name
-- `heasoft-freebsd-arm64-kit`
-
 ## Prerequisites (FreeBSD host)
 - base tools: `git`, `gmake`, `perl`, `python3`, `pkgconf`
 - compilers: `gcc14`, `gfortran14`
@@ -50,28 +47,6 @@ To persist, add the above lines to your shell rc or keep in `heasoft_env.sh`.
 
 ```sh
 sudo pkg install py311-astropy py311-numpy py311-scipy py311-matplotlib
-```
-
-## Create GitHub repo and push
-
-### Option A: with GitHub CLI (`gh`)
-```sh
-cd heasoft-freebsd-arm64-kit
-git init
-git add .
-git commit -m "Initial FreeBSD ARM64 HEASoft porting kit"
-gh repo create heasoft-freebsd-arm64-kit --public --source . --remote origin --push
-```
-
-### Option B: create repo on web, then push
-```sh
-cd heasoft-freebsd-arm64-kit
-git init
-git add .
-git commit -m "Initial FreeBSD ARM64 HEASoft porting kit"
-git remote add origin git@github.com:<your-user>/heasoft-freebsd-arm64-kit.git
-git branch -M main
-git push -u origin main
 ```
 
 ## Included patches
