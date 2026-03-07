@@ -9,6 +9,12 @@ It contains:
 
 It intentionally does **not** contain the full HEASoft source tree.
 
+## Tested environment
+- FreeBSD 15.0-CURRENT
+- aarch64 / ARM64
+- Apple Silicon VM (UTM)
+- HEASoft 6.36
+
 ## Prerequisites (FreeBSD host)
 - base tools: `git`, `gmake`, `perl`, `python3`, `pkgconf`
 - compilers: `gcc14`, `gfortran14`
@@ -31,6 +37,10 @@ source ./heasoft_env.sh
 ```
 
 5. Configure/build HEASoft as usual (from HEASoft docs).
+
+## Known issues
+- XSPEC may fall back to `%` prompt unless `TCLLIBPATH` is set.
+- Some modules may require additional system libraries depending on HEASoft configuration.
 
 ## XSPEC readline prompt fix (system tclreadline)
 If XSPEC falls back to plain `%` prompt, set:

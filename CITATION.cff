@@ -1,0 +1,7 @@
+cff-version: 1.2.0
+title: HEASoft FreeBSD ARM64 Porting Kit
+authors:
+  - family-names: Garg
+    given-names: Anurag
+repository-code: https://github.com/mranuraggarg/heasoft-freebsd-arm64-kit
+license: BSD-3-Clause
