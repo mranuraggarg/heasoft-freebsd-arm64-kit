@@ -38,6 +38,19 @@ source ./heasoft_env.sh
 
 5. Configure/build HEASoft as usual (from HEASoft docs).
 
+## Detailed Installation
+
+Full installation instructions for reproducing the FreeBSD ARM64
+environment (UTM + FreeBSD + HEASoft build) are provided in:
+
+`INSTALL.md`
+
+## Validation
+
+Steps used to validate the compiled HEASoft environment are provided in:
+
+`validation.md`
+
 ## Known issues
 - XSPEC may fall back to `%` prompt unless `TCLLIBPATH` is set.
 - Some modules may require additional system libraries depending on HEASoft configuration.
