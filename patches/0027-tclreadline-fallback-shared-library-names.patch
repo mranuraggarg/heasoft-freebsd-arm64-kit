@@ -1,0 +1,36 @@
+diff --git a/tcltk/tclreadline/tclreadlineInit.tcl.in b/tcltk/tclreadline/tclreadlineInit.tcl.in
+index c9ccf295..29a7a225 100644
+--- a/tcltk/tclreadline/tclreadlineInit.tcl.in
++++ b/tcltk/tclreadline/tclreadlineInit.tcl.in
+@@ -18,10 +18,27 @@ namespace eval tclreadline:: {
+ proc ::tclreadline::Init {} {
+     uplevel #0 {
+ 	if ![info exists tclreadline::library] {
+-	    if [catch {load [file join $env(TCLRL_LIBDIR) libtclreadline-@VERSION@[info sharedlibextension]]} msg] {
+-		puts stderr $msg
+-		error $msg
+-#		exit 2
++	    set tclrl_libdir [file dirname [info script]]
++	    if [info exists env(TCLRL_LIBDIR)] {
++		set tclrl_libdir $env(TCLRL_LIBDIR)
++	    }
++	    set tclrl_ext [info sharedlibextension]
++	    set tclrl_loaded 0
++	    set tclrl_msg ""
++	    foreach tclrl_lib [list \
++		    [file join $tclrl_libdir libtclreadline-@VERSION@$tclrl_ext] \
++		    [file join $tclrl_libdir libtclreadline$tclrl_ext]] {
++		if [catch {load $tclrl_lib} tclrl_msg] {
++		    continue
++		}
++		set tclrl_loaded 1
++		break
++	    }
++	    if {!$tclrl_loaded} {
++		if [catch {load tclreadline} tclrl_msg] {
++		    puts stderr $tclrl_msg
++		    error $tclrl_msg
++		}
+ 	    }
+ 	}
+     }

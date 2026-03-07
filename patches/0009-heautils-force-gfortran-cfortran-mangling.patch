@@ -1,0 +1,23 @@
+diff --git a/heacore/heautils/headas_history.c b/heacore/heautils/headas_history.c
+index 6a5cd5ad..902798bd 100644
+--- a/heacore/heautils/headas_history.c
++++ b/heacore/heautils/headas_history.c
+@@ -1,3 +1,6 @@
++#ifndef gFortran
++#define gFortran
++#endif
+ #include "cfortran.h"
+ #include "headas_utils.h"
+ 
+diff --git a/heacore/heautils/headas_toolname.c b/heacore/heautils/headas_toolname.c
+index 08082fb4..5e8ca95a 100644
+--- a/heacore/heautils/headas_toolname.c
++++ b/heacore/heautils/headas_toolname.c
+@@ -1,4 +1,7 @@
+ #include <string.h>
++#ifndef gFortran
++#define gFortran
++#endif
+ #include "cfortran.h"
+ #include "headas_utils.h"
+ 

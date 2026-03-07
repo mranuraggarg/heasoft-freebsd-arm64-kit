@@ -1,0 +1,149 @@
+diff --git a/heacore/heaio/headas_stdio.c b/heacore/heaio/headas_stdio.c
+index b83cf349..d179cf34 100644
+--- a/heacore/heaio/headas_stdio.c
++++ b/heacore/heaio/headas_stdio.c
+@@ -670,54 +670,74 @@ FCALLSCSUB2(headas_f77chat, HDCHAT, hdchat, INT, STRING)
+   /* 7.19.7 Character input/output functions. */
+   int HD_fgetc(hd_FILE *theStream) {
+     int retval = EOF;
++    FILE * c_file = 0;
+     do {
+-      if(theStream && theStream->cxxStream);
+-      else retval = fgetc(GetFilePtr(theStream));
++      if(theStream && theStream->cxxStream) continue;
++      c_file = GetFilePtr(theStream);
++      if (0 == c_file) continue;
++      retval = fgetc(c_file);
+     } while(0);
+     return retval;
+   }
+ 
+   char *HD_fgets(char * s, int n, hd_FILE * theStream) {
+     char *retval = 0;
++    FILE * c_file = 0;
+     do {
+-      if(theStream && theStream->cxxStream);
+-      else retval = fgets(s, n, GetFilePtr(theStream));
++      if (0 == s || n <= 0) continue;
++      if(theStream && theStream->cxxStream) continue;
++      c_file = GetFilePtr(theStream);
++      if (0 == c_file) continue;
++      retval = fgets(s, n, c_file);
+     } while(0);
+     return retval;
+   }
+ 
+   int HD_fputc(int c, hd_FILE *theStream) {
+     int retval = EOF;
++    FILE * c_file = 0;
+     do {
+-      if(theStream && theStream->cxxStream);
+-      else retval = fputc(c, GetFilePtr(theStream));
++      if(theStream && theStream->cxxStream) continue;
++      c_file = GetFilePtr(theStream);
++      if (0 == c_file) continue;
++      retval = fputc(c, c_file);
+     } while(0);
+     return retval;
+   }
+ 
+   int HD_fputs(const char * s, hd_FILE * theStream) {
+     int retval = EOF;
++    FILE * c_file = 0;
+     do {
+-      if(theStream && theStream->cxxStream);
+-      else retval = fputs(s, GetFilePtr(theStream));
++      if (0 == s) continue;
++      if(theStream && theStream->cxxStream) continue;
++      c_file = GetFilePtr(theStream);
++      if (0 == c_file) continue;
++      retval = fputs(s, c_file);
+     } while(0);
+     return retval;
+   }
+ 
+   int HD_getc(hd_FILE *theStream) {
+     int retval = EOF;
++    FILE * c_file = 0;
+     do {
+-      if(theStream && theStream->cxxStream);
+-      else retval = getc(GetFilePtr(theStream));
++      if(theStream && theStream->cxxStream) continue;
++      c_file = GetFilePtr(theStream);
++      if (0 == c_file) continue;
++      retval = getc(c_file);
+     } while(0);
+     return retval;
+   }
+ 
+   int HD_getchar(void) {
+     int retval = EOF;
++    FILE * c_file = 0;
+     do {
+-      if(hd_in && hd_in->cxxStream);
+-      else retval = getc(GetFilePtr(hd_in));
++      if(hd_in && hd_in->cxxStream) continue;
++      c_file = GetFilePtr(hd_in);
++      if (0 == c_file) continue;
++      retval = getc(c_file);
+     } while(0);
+     return retval;
+   }
+@@ -731,36 +751,49 @@ FCALLSCSUB2(headas_f77chat, HDCHAT, hdchat, INT, STRING)
+ 
+   int HD_putc(int c, hd_FILE *theStream) {
+     int retval = EOF;
++    FILE * c_file = 0;
+     do {
+-      if(theStream && theStream->cxxStream);
+-      else retval = putc(c, GetFilePtr(theStream));
++      if(theStream && theStream->cxxStream) continue;
++      c_file = GetFilePtr(theStream);
++      if (0 == c_file) continue;
++      retval = putc(c, c_file);
+     } while(0);
+     return retval;
+   }
+ 
+   int HD_putchar(int c) {
+     int retval = EOF;
++    FILE * c_file = 0;
+     do {
+-      if(hd_out && hd_out->cxxStream);
+-      else retval = putc(c, GetFilePtr(hd_out));
++      if(hd_out && hd_out->cxxStream) continue;
++      c_file = GetFilePtr(hd_out);
++      if (0 == c_file) continue;
++      retval = putc(c, c_file);
+     } while(0);
+     return retval;
+   }
+ 
+   int HD_puts(const char *s) {
+     int retval = EOF;
++    FILE * c_file = 0;
+     do {
+-      if(hd_out && hd_out->cxxStream);
+-      else retval = fputs(s, GetFilePtr(hd_out));
++      if (0 == s) continue;
++      if(hd_out && hd_out->cxxStream) continue;
++      c_file = GetFilePtr(hd_out);
++      if (0 == c_file) continue;
++      retval = fputs(s, c_file);
+     } while(0);
+     return retval;
+   }
+ 
+   int HD_ungetc(int c, hd_FILE *theStream) {
+     int retval = EOF;
++    FILE * c_file = 0;
+     do {
+-      if(theStream && theStream->cxxStream);
+-      else retval = ungetc(c, GetFilePtr(theStream));
++      if(theStream && theStream->cxxStream) continue;
++      c_file = GetFilePtr(theStream);
++      if (0 == c_file) continue;
++      retval = ungetc(c, c_file);
+     } while(0);
+     return retval;
+   }

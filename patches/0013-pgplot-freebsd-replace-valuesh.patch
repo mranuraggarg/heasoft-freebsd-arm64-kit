@@ -1,0 +1,15 @@
+diff --git a/tcltk/pgplot/pgdispd/proccom.c b/tcltk/pgplot/pgdispd/proccom.c
+index f2d50931..f0b8691c 100644
+--- a/tcltk/pgplot/pgdispd/proccom.c
++++ b/tcltk/pgplot/pgdispd/proccom.c
+@@ -96,8 +96,8 @@ static char rcsid[]="@(#)$Id$";
+ #include <sys/types.h>
+ #include <netinet/in.h>
+ 
+-#if !defined (VMS) && !defined (__APPLE__) && !defined (__CYGWIN__)
+-#include <values.h>
++#if !defined (VMS)
++#include <float.h>
+ #endif
+ 
+ #ifdef sun

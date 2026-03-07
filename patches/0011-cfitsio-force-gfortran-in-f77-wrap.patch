@@ -1,0 +1,13 @@
+diff --git a/heacore/cfitsio/f77_wrap.h b/heacore/cfitsio/f77_wrap.h
+index 276adadd..b0684975 100644
+--- a/heacore/cfitsio/f77_wrap.h
++++ b/heacore/cfitsio/f77_wrap.h
+@@ -1,5 +1,8 @@
+ #define UNSIGNED_BYTE
+ 
++#ifndef gFortran
++#define gFortran
++#endif
+ #include "cfortran.h"
+ 
+ /************************************************************************

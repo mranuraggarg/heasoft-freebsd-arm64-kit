@@ -1,0 +1,33 @@
+diff --git a/heacore/cfitsio/f77_wrap.h b/heacore/cfitsio/f77_wrap.h
+index 82d366f4..276adadd 100644
+--- a/heacore/cfitsio/f77_wrap.h
++++ b/heacore/cfitsio/f77_wrap.h
+@@ -45,7 +45,13 @@
+ #define    LONGV_cfH(S,U,B)
+ #define    PLONG_cfH(S,U,B)
+ 
+-static long *F2Clongv(long size, int *A)
++#if defined(__GNUC__) || defined(__clang__)
++#define CFITSIO_UNUSED __attribute__((unused))
++#else
++#define CFITSIO_UNUSED
++#endif
++
++static long *CFITSIO_UNUSED F2Clongv(long size, int *A)
+ {
+   long i;
+   long *B;
+@@ -55,7 +61,7 @@ static long *F2Clongv(long size, int *A)
+   return(B);
+ }
+ 
+-static void C2Flongv(long size, int *A, long *B)
++static void CFITSIO_UNUSED C2Flongv(long size, int *A, long *B)
+ {
+   long i;
+ 
+@@ -286,4 +292,3 @@ extern fitsfile *gFitsFiles[];       /*    by Fortran unit numbers       */
+     TCF(LN,TD,13,1) TCF(LN,TE,14,1) );                          _Icf(0,K,T0,0,0) \
+     CFARGT14S(RCF,T1,T2,T3,T4,T5,T6,T7,T8,T9,TA,TB,TC,TD,TE)        _(T0,_cfI) \
+   }
+-

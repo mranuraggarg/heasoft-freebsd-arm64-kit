@@ -1,0 +1,23 @@
+diff --git a/Xspec/src/xslib/Makefile b/Xspec/src/xslib/Makefile
+index 16761474..935c2a90 100644
+--- a/Xspec/src/xslib/Makefile
++++ b/Xspec/src/xslib/Makefile
+@@ -48,13 +48,13 @@ sys.f:
+ cio.c:
+ 	@-rm -f $@; \
+ 	if [ "x${EXT}" = xwin ]; then \
+-		${HD_LN_S} ciowin.c $@; \
++		ln -sf ciowin.c $@; \
+ 	elif [ -f cio${EXT}.c ]; then \
+-		${HD_LN_S} cio${EXT}.c $@; \
+-	elif [ ${GCC} = yes ]; then \
+-		${HD_LN_S} ciolnx.c $@; \
++		ln -sf cio${EXT}.c $@; \
++	elif [ "x${GCC}" = xyes ]; then \
++		ln -sf ciolnx.c $@; \
+ 	else \
+-		${HD_LN_S} ciolnx.c $@; \
++		ln -sf ciolnx.c $@; \
+ 	fi
+ 
+ # Use sysclnx.c whenever GCC='yes', except in Cygwin:

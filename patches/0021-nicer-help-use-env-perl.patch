@@ -1,0 +1,20 @@
+diff --git a/nicer/help/Makefile b/nicer/help/Makefile
+index acc72cfa..02f75e89 100644
+--- a/nicer/help/Makefile
++++ b/nicer/help/Makefile
+@@ -11,4 +11,4 @@ all: nicer.html
+ include ${HD_STD_MAKEFILE}
+ 
+ nicer.html: nicer_template.html ../tasks/*/*.html ../tasks/*/*/*.html
+-	./make-mission-help $@ $^
++	/usr/bin/env perl ./make-mission-help $@ $^
+diff --git a/nicer/help/make-mission-help b/nicer/help/make-mission-help
+index 17d40afb..3b52a50a 100755
+--- a/nicer/help/make-mission-help
++++ b/nicer/help/make-mission-help
+@@ -1,4 +1,4 @@
+-#!/usr/bin/perl
++#!/usr/bin/env perl
+ #
+ # USAGE:
+ 

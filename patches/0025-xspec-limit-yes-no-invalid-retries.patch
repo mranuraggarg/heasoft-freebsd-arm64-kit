@@ -1,0 +1,25 @@
+diff --git a/Xspec/src/XSUtil/Utils/XSutility.cxx b/Xspec/src/XSUtil/Utils/XSutility.cxx
+index 1df8f301..67d51d21 100644
+--- a/Xspec/src/XSUtil/Utils/XSutility.cxx
++++ b/Xspec/src/XSUtil/Utils/XSutility.cxx
+@@ -72,6 +72,8 @@ namespace XSutility {
+      string answer;
+      int result (defaultAns);
+      const string BREAK("/*");
++     const int MAX_INVALID_REPLIES = 3;
++     int invalidReplies = 0;
+      try
+      {
+         a.exceptions(ios_base::badbit|ios_base::eofbit);
+@@ -102,7 +104,10 @@ namespace XSutility {
+                             break; 
+                     default: 
+                             q << " please enter Y/y or N/n " ;
+-                            continue;
++                            if (++invalidReplies >= MAX_INVALID_REPLIES)
++                               result = defaultAns;
++                            else
++                               continue;
+                  }
+               }
+            }

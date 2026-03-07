@@ -1,0 +1,32 @@
+diff --git a/ftools/xanlib/Makefile b/ftools/xanlib/Makefile
+index 4eaf53c1..304dbed2 100644
+--- a/ftools/xanlib/Makefile
++++ b/ftools/xanlib/Makefile
+@@ -292,21 +292,21 @@ sysdep/sysc.c:
+ termio/cio.c:
+ 	@-rm -f $@; \
+ 	if [ "x${EXT}" = xwin ]; then \
+-		ln -sf termio/ciowin.c $@; \
++		ln -sf ciowin.c $@; \
+ 	elif [ -f termio/cio${EXT}.c ]; then \
+-		ln -sf termio/cio${EXT}.c $@; \
++		ln -sf cio${EXT}.c $@; \
+ 	elif [ "x${GCC}" = xyes ]; then \
+-		ln -sf termio/ciolnx.c $@; \
++		ln -sf ciolnx.c $@; \
+ 	else \
+-		ln -sf termio/ciolnx.c $@; \
++		ln -sf ciolnx.c $@; \
+ 	fi
+ 
+ termio/sysio.f:
+ 	@-rm -f $@; \
+ 	if [ -f termio/sysio.${EXT} ]; then \
+ 		if [ "x${EXT}" = xwin ]; then \
+-			${HD_LN_S} termio/sysio.${EXT} $@; \
++			ln -sf sysio.${EXT} $@; \
+ 		else \
+-			${HD_LN_S} sysio.${EXT} $@; \
++			ln -sf sysio.${EXT} $@; \
+ 		fi; \
+ 	fi

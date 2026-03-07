@@ -1,0 +1,33 @@
+diff --git a/Xspec/src/main/xspec.cxx b/Xspec/src/main/xspec.cxx
+index c03ce0cc..2df9af29 100644
+--- a/Xspec/src/main/xspec.cxx
++++ b/Xspec/src/main/xspec.cxx
+@@ -152,15 +152,21 @@ Tcl_AppInit(Tcl_Interp *xsInterp)	/* Interpreter for application. */
+     interp = xsInterp;
+ 
+ 
+-    string tclrlPath = string(getenv("HEADAS"));
+-    tclrlPath += "/lib/tclreadline2.1.0";
+-    string tclrlInit (tclrlPath + string("/tclreadlineInit.tcl"));
+-
+-    if (Tcl_EvalFile(xsInterp, tclrlInit.c_str()))
++    // Prefer a system-installed shared tclreadline (package require).
++    // If that fails, fall back to the bundled init script path.
++    if (Tcl_Eval(xsInterp, "package require tclreadline") != TCL_OK)
+     {
+-        cerr << "Warning: tclreadline initialization failed, continuing without readline support.\n"
+-             << Tcl_GetStringResult(xsInterp) << endl;
+         Tcl_ResetResult(xsInterp);
++        string tclrlPath = string(getenv("HEADAS"));
++        tclrlPath += "/lib/tclreadline2.1.0";
++        string tclrlInit (tclrlPath + string("/tclreadlineInit.tcl"));
++
++        if (Tcl_EvalFile(xsInterp, tclrlInit.c_str()))
++        {
++            cerr << "Warning: tclreadline initialization failed, continuing without readline support.\n"
++                 << Tcl_GetStringResult(xsInterp) << endl;
++            Tcl_ResetResult(xsInterp);
++        }
+     }
+ 
+     // add xspec's internal scripting path to tcl's path

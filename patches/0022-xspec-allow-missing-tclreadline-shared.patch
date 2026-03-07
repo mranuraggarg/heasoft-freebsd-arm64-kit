@@ -1,0 +1,18 @@
+diff --git a/Xspec/src/main/xspec.cxx b/Xspec/src/main/xspec.cxx
+index 502a3f8a..c03ce0cc 100644
+--- a/Xspec/src/main/xspec.cxx
++++ b/Xspec/src/main/xspec.cxx
+@@ -156,7 +156,12 @@ Tcl_AppInit(Tcl_Interp *xsInterp)	/* Interpreter for application. */
+     tclrlPath += "/lib/tclreadline2.1.0";
+     string tclrlInit (tclrlPath + string("/tclreadlineInit.tcl"));
+ 
+-    if (Tcl_EvalFile(xsInterp, tclrlInit.c_str()))  throw TclInitErr();    
++    if (Tcl_EvalFile(xsInterp, tclrlInit.c_str()))
++    {
++        cerr << "Warning: tclreadline initialization failed, continuing without readline support.\n"
++             << Tcl_GetStringResult(xsInterp) << endl;
++        Tcl_ResetResult(xsInterp);
++    }
+ 
+     // add xspec's internal scripting path to tcl's path
+ 

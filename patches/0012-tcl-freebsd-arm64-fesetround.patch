@@ -1,0 +1,30 @@
+diff --git a/tcltk/tcl/unix/tclUnixInit.c b/tcltk/tcl/unix/tclUnixInit.c
+index 72039ac6..f657c443 100644
+--- a/tcltk/tcl/unix/tclUnixInit.c
++++ b/tcltk/tcl/unix/tclUnixInit.c
+@@ -23,7 +23,11 @@
+ #endif
+ #include <sys/resource.h>
+ #if defined(__FreeBSD__) && defined(__GNUC__)
+-#   include <floatingpoint.h>
++#   if defined(__aarch64__) || defined(__arm64__)
++#	include <fenv.h>
++#   else
++#	include <floatingpoint.h>
++#   endif
+ #endif
+ #if defined(__bsdi__)
+ #   include <sys/param.h>
+@@ -402,8 +406,12 @@ TclpInitPlatform(void)
+      * patch in BSD ports system from root@celsius.bychok.com)
+      */
+ 
++#   if defined(__aarch64__) || defined(__arm64__)
++    (void) fesetround(FE_TONEAREST);
++#   else
+     fpsetround(FP_RN);
+     (void) fpsetmask(0L);
++#   endif
+ #endif
+ 
+ #if defined(__bsdi__) && (_BSDI_VERSION > 199501)

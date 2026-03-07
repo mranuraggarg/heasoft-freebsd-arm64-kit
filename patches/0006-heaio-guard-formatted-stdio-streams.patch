@@ -1,0 +1,293 @@
+diff --git a/heacore/heaio/headas_stdio.c b/heacore/heaio/headas_stdio.c
+index d179cf34..71359821 100644
+--- a/heacore/heaio/headas_stdio.c
++++ b/heacore/heaio/headas_stdio.c
+@@ -200,6 +200,7 @@ int HDIO_init(void){
+ int headas_chat(int threshold, const char* fmt, ...){
+     va_list ap;
+     int status=0;
++    FILE * c_file = 0;
+ 
+     if (headas_chatpar < 0){
+ 	fprintf(stderr,"Error: headas_chat(): no chatter parameter present\n");
+@@ -209,7 +210,8 @@ int headas_chat(int threshold, const char* fmt, ...){
+ 
+     if (headas_chatpar >= threshold){
+ 	va_start(ap, fmt);
+-	status = vfprintf(heaout, fmt, ap);
++	c_file = heaout ? heaout : stdout;
++	status = vfprintf(c_file, fmt, ap);
+ 	va_end(ap);
+     }
+ 
+@@ -222,9 +224,11 @@ int headas_chat(int threshold, const char* fmt, ...){
+ int headas_printf(const char* fmt, ...) {
+   va_list ap;
+   int status=1;
++  FILE * c_file = 0;
+ 
+   va_start(ap, fmt);
+-  status = vfprintf(heaout, fmt, ap);
++  c_file = heaout ? heaout : stdout;
++  status = vfprintf(c_file, fmt, ap);
+   va_end(ap);
+ 
+   return status;
+@@ -236,9 +240,11 @@ int headas_printf(const char* fmt, ...) {
+ int pil_printf(const char* fmt, ...) {
+   va_list ap;
+   int status=1;
++  FILE * c_file = 0;
+ 
+   va_start(ap, fmt);
+-  status = vfprintf(heaprom, fmt, ap);
++  c_file = heaprom ? heaprom : stdout;
++  status = vfprintf(c_file, fmt, ap);
+   va_end(ap);
+ 
+   return status;
+@@ -356,7 +362,7 @@ const char *HD_setenv(const char *name, const char *value) {
+    Usage: call hdecho('my text') */
+ void headas_f77echo(const char *txt){
+ 
+-    fprintf(heaout,"%s\n",txt);
++    fprintf(heaout ? heaout : stdout, "%s\n", txt ? txt : "");
+ 
+     return;
+ }
+@@ -367,7 +373,7 @@ FCALLSCSUB1(headas_f77echo, HDECHO, hdecho, STRING)
+    Usage: call hderr('my error message') */
+ void headas_f77err(const char *txt){
+ 
+-    fprintf(heaerr,"%s\n",txt);
++    fprintf(heaerr ? heaerr : stderr, "%s\n", txt ? txt : "");
+ 
+     return;
+ }
+@@ -499,11 +505,15 @@ FCALLSCSUB2(headas_f77chat, HDCHAT, hdchat, INT, STRING)
+   /* 7.19.6 Formatted input/output functions. */
+   int HD_fprintf(hd_FILE * theStream, const char * fmt, ...) {
+     int retval = -1;
++    FILE * c_file = 0;
+     va_list ap;
+     va_start(ap, fmt);
+     do {
+-      if(theStream && theStream->cxxStream);
+-      else retval = vfprintf(GetFilePtr(theStream), fmt, ap);
++      if (0 == fmt) continue;
++      if(theStream && theStream->cxxStream) continue;
++      c_file = GetFilePtr(theStream);
++      if (0 == c_file) continue;
++      retval = vfprintf(c_file, fmt, ap);
+     } while(0);
+     va_end(ap);
+     return retval;
+@@ -511,15 +521,23 @@ FCALLSCSUB2(headas_f77chat, HDCHAT, hdchat, INT, STRING)
+ 
+   int HD_fscanf(hd_FILE * theStream, const char * fmt, ...) {
+     int retval = EOF;
++    FILE * c_file = 0;
++    FILE * err_file = 0;
+     va_list ap;
+     va_start(ap, fmt);
+     do {
++      if (0 == fmt) continue;
++      if(theStream && theStream->cxxStream) continue;
++      c_file = GetFilePtr(theStream);
++      if (0 == c_file) continue;
++      err_file = GetFilePtr(hd_err);
++      if (0 == err_file) err_file = stderr;
+       if(theStream && theStream->cxxStream);
+       else {
+ #ifdef ANSI_ISO_IEC_9899_1999_COMPLIANT
+-        retval = vfscanf(GetFilePtr(theStream), fmt, ap);
++        retval = vfscanf(c_file, fmt, ap);
+ #else
+-        fprintf(GetFilePtr(hd_err), "HD_fscanf not yet implemented.\n");
++        fprintf(err_file, "HD_fscanf not yet implemented.\n");
+         assert(0);
+ #endif
+       }
+@@ -530,11 +548,15 @@ FCALLSCSUB2(headas_f77chat, HDCHAT, hdchat, INT, STRING)
+ 
+   int HD_printf(const char * fmt, ...) {
+     int retval = -1;
++    FILE * c_file = 0;
+     va_list ap;
+     va_start(ap, fmt);
+     do {
+-      if(hd_out && hd_out->cxxStream);
+-      else retval = vfprintf(GetFilePtr(hd_out), fmt, ap);
++      if (0 == fmt) continue;
++      if(hd_out && hd_out->cxxStream) continue;
++      c_file = GetFilePtr(hd_out);
++      if (0 == c_file) c_file = stdout;
++      retval = vfprintf(c_file, fmt, ap);
+     } while(0);
+     va_end(ap);
+     return retval;
+@@ -542,15 +564,23 @@ FCALLSCSUB2(headas_f77chat, HDCHAT, hdchat, INT, STRING)
+ 
+   int HD_scanf(const char * fmt, ...) {
+     int retval = EOF;
++    FILE * c_file = 0;
++    FILE * err_file = 0;
+     va_list ap;
+     va_start(ap, fmt);
+     do {
++      if (0 == fmt) continue;
++      if(hd_in && hd_in->cxxStream) continue;
++      c_file = GetFilePtr(hd_in);
++      if (0 == c_file) c_file = stdin;
++      err_file = GetFilePtr(hd_err);
++      if (0 == err_file) err_file = stderr;
+       if(hd_in && hd_in->cxxStream);
+       else {
+ #ifdef ANSI_ISO_IEC_9899_1999_COMPLIANT
+-        retval = vfscanf(GetFilePtr(hd_in), fmt, ap);
++        retval = vfscanf(c_file, fmt, ap);
+ #else
+-        fprintf(GetFilePtr(hd_err), "HD_scanf not yet implemented.\n");
++        fprintf(err_file, "HD_scanf not yet implemented.\n");
+         assert(0);
+ #endif
+       }
+@@ -562,8 +592,11 @@ FCALLSCSUB2(headas_f77chat, HDCHAT, hdchat, INT, STRING)
+   int HD_snprintf(char * s, size_t n, const char * fmt, ...) {
+     int retval = -1;
+     va_list ap;
++    FILE * err_file = 0;
+     va_start(ap, fmt);
+-    fprintf(GetFilePtr(hd_err), "HD_snprintf not implemented.\n");
++    err_file = GetFilePtr(hd_err);
++    if (0 == err_file) err_file = stderr;
++    fprintf(err_file, "HD_snprintf not implemented.\n");
+     assert(0);
+     va_end(ap);
+     return retval;
+@@ -581,11 +614,14 @@ FCALLSCSUB2(headas_f77chat, HDCHAT, hdchat, INT, STRING)
+   int HD_sscanf(const char * s, const char * fmt, ...) {
+     int retval = EOF;
+     va_list ap;
++    FILE * err_file = 0;
+     va_start(ap, fmt);
+ #ifdef ANSI_ISO_IEC_9899_1999_COMPLIANT
+     retval = vsscanf(s, fmt, ap);
+ #else
+-    fprintf(GetFilePtr(hd_err), "HD_sscanf not yet implemented.\n");
++    err_file = GetFilePtr(hd_err);
++    if (0 == err_file) err_file = stderr;
++    fprintf(err_file, "HD_sscanf not yet implemented.\n");
+     assert(0);
+ #endif
+     va_end(ap);
+@@ -595,9 +631,13 @@ FCALLSCSUB2(headas_f77chat, HDCHAT, hdchat, INT, STRING)
+   int HD_vfprintf(hd_FILE * theStream, const char * fmt,
+       va_list ap) {
+     int retval = -1;
++    FILE * c_file = 0;
+     do {
+-      if(theStream && theStream->cxxStream);
+-      else retval = vfprintf(GetFilePtr(theStream), fmt, ap);
++      if (0 == fmt) continue;
++      if(theStream && theStream->cxxStream) continue;
++      c_file = GetFilePtr(theStream);
++      if (0 == c_file) continue;
++      retval = vfprintf(c_file, fmt, ap);
+     } while(0);
+     return retval;
+   }
+@@ -605,13 +645,21 @@ FCALLSCSUB2(headas_f77chat, HDCHAT, hdchat, INT, STRING)
+   int HD_vfscanf(hd_FILE * theStream, const char * fmt,
+       va_list ap) {
+     int retval = EOF;
++    FILE * c_file = 0;
++    FILE * err_file = 0;
+     do {
++      if (0 == fmt) continue;
++      if(theStream && theStream->cxxStream) continue;
++      c_file = GetFilePtr(theStream);
++      if (0 == c_file) continue;
++      err_file = GetFilePtr(hd_err);
++      if (0 == err_file) err_file = stderr;
+       if(theStream && theStream->cxxStream);
+       else {
+ #ifdef ANSI_ISO_IEC_9899_1999_COMPLIANT
+-        retval = vfscanf(GetFilePtr(theStream), fmt, ap);
++        retval = vfscanf(c_file, fmt, ap);
+ #else
+-        fprintf(GetFilePtr(hd_err), "HD_vfscanf not yet implemented.\n");
++        fprintf(err_file, "HD_vfscanf not yet implemented.\n");
+         assert(0);
+ #endif
+       }
+@@ -621,22 +669,34 @@ FCALLSCSUB2(headas_f77chat, HDCHAT, hdchat, INT, STRING)
+ 
+   int HD_vprintf(const char * fmt, va_list ap) {
+     int retval = -1;
++    FILE * c_file = 0;
+     do {
+-      if(hd_out && hd_out->cxxStream);
+-      else retval = vfprintf(GetFilePtr(hd_out), fmt, ap);
++      if (0 == fmt) continue;
++      if(hd_out && hd_out->cxxStream) continue;
++      c_file = GetFilePtr(hd_out);
++      if (0 == c_file) c_file = stdout;
++      retval = vfprintf(c_file, fmt, ap);
+     } while(0);
+     return retval;
+   }
+ 
+   int HD_vscanf(const char * fmt, va_list ap) {
+     int retval = EOF;
++    FILE * c_file = 0;
++    FILE * err_file = 0;
+     do {
++      if (0 == fmt) continue;
++      if(hd_in && hd_in->cxxStream) continue;
++      c_file = GetFilePtr(hd_in);
++      if (0 == c_file) c_file = stdin;
++      err_file = GetFilePtr(hd_err);
++      if (0 == err_file) err_file = stderr;
+       if(hd_in && hd_in->cxxStream);
+       else {
+ #ifdef ANSI_ISO_IEC_9899_1999_COMPLIANT
+-        retval = vfscanf(GetFilePtr(hd_in), fmt, ap);
++        retval = vfscanf(c_file, fmt, ap);
+ #else
+-        fprintf(GetFilePtr(hd_err), "HD_vscanf not yet implemented.\n");
++        fprintf(err_file, "HD_vscanf not yet implemented.\n");
+         assert(0);
+ #endif
+       }
+@@ -647,7 +707,9 @@ FCALLSCSUB2(headas_f77chat, HDCHAT, hdchat, INT, STRING)
+   int HD_vsnprintf(char * s, size_t n, const char * fmt,
+       va_list ap) {
+     int retval = -1;
+-    fprintf(GetFilePtr(hd_err), "HD_vsnprintf not implemented.\n");
++    FILE * err_file = GetFilePtr(hd_err);
++    if (0 == err_file) err_file = stderr;
++    fprintf(err_file, "HD_vsnprintf not implemented.\n");
+     assert(0);
+     return retval;
+   }
+@@ -661,7 +723,9 @@ FCALLSCSUB2(headas_f77chat, HDCHAT, hdchat, INT, STRING)
+ #ifdef ANSI_ISO_IEC_9899_1999_COMPLIANT
+     return vsscanf(s, fmt, ap);
+ #else
+-    fprintf(GetFilePtr(hd_err), "HD_vsscanf not yet implemented.\n");
++    FILE * err_file = GetFilePtr(hd_err);
++    if (0 == err_file) err_file = stderr;
++    fprintf(err_file, "HD_vsscanf not yet implemented.\n");
+     assert(0);
+     return EOF;
+ #endif
+@@ -744,7 +808,7 @@ FCALLSCSUB2(headas_f77chat, HDCHAT, hdchat, INT, STRING)
+ 
+   char *HD_gets(char *s) {
+     char *retval = s;
+-    fprintf(heaerr, "Do not use HD_gets. Use HD_fgets instead.\n");
++    fprintf(heaerr ? heaerr : stderr, "Do not use HD_gets. Use HD_fgets instead.\n");
+     assert(0);
+     return retval;
+   }

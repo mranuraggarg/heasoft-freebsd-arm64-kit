@@ -1,0 +1,14 @@
+diff --git a/heacore/heaio/headas_stdio.c b/heacore/heaio/headas_stdio.c
+index 71359821..3195da06 100644
+--- a/heacore/heaio/headas_stdio.c
++++ b/heacore/heaio/headas_stdio.c
+@@ -4,6 +4,9 @@
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
++#ifndef gFortran
++#define gFortran
++#endif
+ #include "cfortran.h"
+ #include "headas_stdio.h"
+ #include "fitsio2.h"

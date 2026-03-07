@@ -1,0 +1,38 @@
+diff --git a/tcltk/tclreadline/tclreadlineInit.tcl.in b/tcltk/tclreadline/tclreadlineInit.tcl.in
+index 29a7a225..32a0cb85 100644
+--- a/tcltk/tclreadline/tclreadlineInit.tcl.in
++++ b/tcltk/tclreadline/tclreadlineInit.tcl.in
+@@ -25,9 +25,18 @@ proc ::tclreadline::Init {} {
+ 	    set tclrl_ext [info sharedlibextension]
+ 	    set tclrl_loaded 0
+ 	    set tclrl_msg ""
+-	    foreach tclrl_lib [list \
++	    set tclrl_candidates [list \
+ 		    [file join $tclrl_libdir libtclreadline-@VERSION@$tclrl_ext] \
+-		    [file join $tclrl_libdir libtclreadline$tclrl_ext]] {
++		    [file join $tclrl_libdir libtclreadline$tclrl_ext]]
++	    # FreeBSD packages may ship version-suffixed shared libs (eg .so.N).
++	    foreach tclrl_glob [list \
++		    [file join $tclrl_libdir libtclreadline$tclrl_ext.*] \
++		    [file join $tclrl_libdir libtclreadline-@VERSION@$tclrl_ext.*]] {
++		foreach tclrl_match [glob -nocomplain $tclrl_glob] {
++		    lappend tclrl_candidates $tclrl_match
++		}
++	    }
++	    foreach tclrl_lib $tclrl_candidates {
+ 		if [catch {load $tclrl_lib} tclrl_msg] {
+ 		    continue
+ 		}
+@@ -35,10 +44,8 @@ proc ::tclreadline::Init {} {
+ 		break
+ 	    }
+ 	    if {!$tclrl_loaded} {
+-		if [catch {load tclreadline} tclrl_msg] {
+-		    puts stderr $tclrl_msg
+-		    error $tclrl_msg
+-		}
++		puts stderr $tclrl_msg
++		error $tclrl_msg
+ 	    }
+ 	}
+     }

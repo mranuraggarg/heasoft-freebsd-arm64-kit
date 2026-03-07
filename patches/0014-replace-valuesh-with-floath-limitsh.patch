@@ -1,0 +1,145 @@
+diff --git a/ftools/fimage/tasks/fimg2tab/fimg2tab.c b/ftools/fimage/tasks/fimg2tab/fimg2tab.c
+index b4b856be..b52f43ef 100644
+--- a/ftools/fimage/tasks/fimg2tab/fimg2tab.c
++++ b/ftools/fimage/tasks/fimg2tab/fimg2tab.c
+@@ -141,16 +141,26 @@ NumPxls   - Total number of pixels in the image fragment to read
+ #include <stdlib.h>
+ #include <string.h>
+ #include <limits.h>
++#include <float.h>
+ #include <cfitsio.h>
+ #include <fitsio.h>
+ #include <xpi.h>	/* Required for parameter file operations. */
+ #include <cftools.h>	/* Required to use c_fcerr, c_fcecho, etc. */
+ #include <ftools.h>
+ #if !defined(__APPLE__) && !defined(__CYGWIN__)
+-#include <values.h>
+ #include <malloc.h>
+ #endif
+ 
++#ifndef MAXDOUBLE
++#define MAXDOUBLE DBL_MAX
++#endif
++#ifndef MAXFLOAT
++#define MAXFLOAT  FLT_MAX
++#endif
++#ifndef MAXINT
++#define MAXINT    INT_MAX
++#endif
++
+ /* forward declarations */
+ static void FlipX(double *data, long NumX, long NumY);
+ static void FlipY(double *data, long NumX, long NumY);
+diff --git a/ftools/fimage/tasks/fimgextract/fimgextract.c b/ftools/fimage/tasks/fimgextract/fimgextract.c
+index d46eebcd..4dd7b86a 100644
+--- a/ftools/fimage/tasks/fimgextract/fimgextract.c
++++ b/ftools/fimage/tasks/fimgextract/fimgextract.c
+@@ -50,19 +50,21 @@
+                         standard I/O calls should NOT be used. */
+ #include <stdlib.h>
+ #include <string.h>
++#include <float.h>
++#include <limits.h>
+ 
+ #include <xpi.h>        /* Required for parameter file operations. */
+ #include <ftools.h>
+ #include <cftools.h>    /* Required to use c_fcerr, c_fcecho, etc. */
+ #include <fitsio.h>
+-#if (defined __APPLE__) || (defined __CYGWIN__)
+-#include <float.h>
+-#include <limits.h>
++#ifndef MAXDOUBLE
+ #define MAXDOUBLE DBL_MAX
++#endif
++#ifndef MAXFLOAT
+ #define MAXFLOAT  FLT_MAX
++#endif
++#ifndef MAXINT
+ #define MAXINT    INT_MAX
+-#else
+-#include <values.h>
+ #endif
+ 
+ #define MAXHDU 100000
+diff --git a/ftools/futils/tasks/fsumrows/fsumrows_process_rows.c b/ftools/futils/tasks/fsumrows/fsumrows_process_rows.c
+index a73984e1..d921d02e 100644
+--- a/ftools/futils/tasks/fsumrows/fsumrows_process_rows.c
++++ b/ftools/futils/tasks/fsumrows/fsumrows_process_rows.c
+@@ -104,10 +104,17 @@ Primary Variables:
+ *******************************************************************************/
+ 
+ #include <ftools.h>
+-#if (defined __APPLE__) || (defined __CYGWIN__)
++#include <float.h>
+ #include <limits.h>
+-#else
+-#include <values.h>
++
++#ifndef MAXDOUBLE
++#define MAXDOUBLE DBL_MAX
++#endif
++#ifndef MAXFLOAT
++#define MAXFLOAT  FLT_MAX
++#endif
++#ifndef MAXINT
++#define MAXINT    INT_MAX
+ #endif
+ 
+ #include "fsumrows.h"
+diff --git a/ftools/futils/tasks/fsumrows/fsumrows_wrt_col_result.c b/ftools/futils/tasks/fsumrows/fsumrows_wrt_col_result.c
+index 0c13adc8..a8b04500 100644
+--- a/ftools/futils/tasks/fsumrows/fsumrows_wrt_col_result.c
++++ b/ftools/futils/tasks/fsumrows/fsumrows_wrt_col_result.c
+@@ -37,14 +37,17 @@ Primary Variables:
+ ******************************************************************************/
+ 
+ #include <ftools.h>
+-#if (defined __APPLE__) || (defined __CYGWIN__)
+ #include <float.h>
+ #include <limits.h>
++
++#ifndef MAXDOUBLE
+ #define MAXDOUBLE DBL_MAX
++#endif
++#ifndef MAXFLOAT
+ #define MAXFLOAT  FLT_MAX
++#endif
++#ifndef MAXINT
+ #define MAXINT    INT_MAX
+-#else
+-#include <values.h>
+ #endif
+ 
+ #include "fsumrows.h"
+diff --git a/suzaku/tasks/gtisynch/gtisynch.c b/suzaku/tasks/gtisynch/gtisynch.c
+index f479f77b..6afcd291 100644
+--- a/suzaku/tasks/gtisynch/gtisynch.c
++++ b/suzaku/tasks/gtisynch/gtisynch.c
+@@ -55,17 +55,22 @@
+ #include <stdlib.h>
+ #include <string.h>
+ #include <ctype.h>
++#include <float.h>
++#include <limits.h>
+ #include "fitsio.h"
+ #include "pil.h"
+ #include "headas.h"
+ #define TOOLSUB gtisynch
+ #include "headas_main.c"
+ 
+-#if (defined __APPLE__) || (defined __CYGWIN__)
+-#include <float.h>
+-#include <limits.h>
+-#else
+-#include <values.h>
++#ifndef MAXDOUBLE
++#define MAXDOUBLE DBL_MAX
++#endif
++#ifndef MAXFLOAT
++#define MAXFLOAT  FLT_MAX
++#endif
++#ifndef MAXINT
++#define MAXINT    INT_MAX
+ #endif
+ 
+ #define BUFSIZE  80
