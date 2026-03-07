@@ -18,8 +18,9 @@ It intentionally does **not** contain the full HEASoft source tree.
 ## Prerequisites (FreeBSD host)
 - base tools: `git`, `gmake`, `perl`, `python3`, `pkgconf`
 - compilers: `gcc14`, `gfortran14`
-- runtime libs commonly needed by HEASoft modules
-- optional but recommended for XSPEC prompt: `tclreadline` package
+- Tcl/Tk stack for XSPEC: `tcl86`, `tk86`, `tclreadline`
+- recommended X11 runtime for GUI tools: `xorg`
+- some modules may require additional system libraries depending on build configuration
 
 ## Quick usage
 1. Get official HEASoft source (`heasoft-6.36`) from HEASARC.

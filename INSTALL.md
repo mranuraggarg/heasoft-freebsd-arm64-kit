@@ -39,7 +39,19 @@ pkg upgrade
 Install required build tools:
 
 ```sh
-pkg install git gmake gcc14 gfortran14 perl python3 pkgconf
+pkg install git gmake gcc14 gfortran14 perl python3 pkgconf tcl86 tk86 tclreadline
+```
+
+Install recommended runtime/UI dependencies (especially for XSPEC/Tk/X11 workflows):
+
+```sh
+pkg install xorg
+```
+
+Optional Python packages for `heasoftpy` workflows:
+
+```sh
+pkg install py311-astropy py311-numpy py311-scipy py311-matplotlib
 ```
 
 ## Download HEASoft source
