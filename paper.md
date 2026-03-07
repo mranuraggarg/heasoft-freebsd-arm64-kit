@@ -23,7 +23,7 @@ The resulting workflow demonstrates that HEASoft can operate reliably on FreeBSD
 
 # Statement of Need
 
-HEASoft is an essential component of many high‑energy astrophysics data analysis pipelines. Tools such as XSPEC are widely used for spectral analysis of X‑ray observations from missions including *Chandra*, *XMM‑Newton*, *Swift*, and *NuSTAR* \citep{arnaud1996xspec}.
+HEASoft is an essential component of many high‑energy astrophysics data analysis pipelines. Tools such as XSPEC are widely used for spectral analysis of X‑ray observations from missions including *Chandra*, *XMM‑Newton*, *Swift*, and *NuSTAR* [@arnaud1996xspec].
 
 While HEASoft is designed to be portable, official build environments primarily target Linux and macOS. As a result, compiling HEASoft on other Unix‑like systems may require resolving undocumented platform‑specific issues.
 
@@ -213,7 +213,3 @@ The HEASoft source code itself is distributed separately by NASA HEASARC under i
 # Acknowledgements
 
 The author acknowledges the HEASARC development team for maintaining the HEASoft software suite and providing open access to astrophysical data analysis tools.
-
-# References
-
-Arnaud, K. A. (1996). XSPEC: The First Ten Years. In *Astronomical Data Analysis Software and Systems V*. ASP Conference Series.
