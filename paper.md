@@ -102,7 +102,18 @@ ftlist <FITS_FILE>
 Expected output (example placeholder):
 
 ```
-[placeholder for ftlist output]
+$ ftlist "$HEADAS/refdata/pulsar_ephem_lib.fits"
+
+Print options: H C K I T [H]
+
+        Name               Type       Dimensions
+        ----               ----       ----------
+HDU 1   Primary Array      Image      Int2(1)
+HDU 2   PSR_BIN            BinTable    10 cols x 25 rows
+HDU 3   PSR_TIME           BinTable    16 cols x 1183 rows
+HDU 4   LEAP_SECS          BinTable     2 cols x 22 rows
+HDU 5   TIMELINE           BinTable     5 cols x 2840 rows
+HDU 6   EPHEM_GRO          BinTable    16 cols x 4750 rows
 ```
 
 These tests confirm correct integration of the CFITSIO library and core HEASoft utilities.
@@ -122,13 +133,31 @@ Example model initialization:
 
 ```
 model powerlaw
-fit
 ```
 
 Output placeholder:
 
 ```
-[placeholder for XSPEC output]
+$ xspec
+
+        XSPEC version: 12.15.1
+    Build Date/Time: Fri Mar  6 23:22:39 2026
+
+XSPEC12> model powerlaw
+
+Input parameter value, delta, min, bot, top, and max values for ...
+              1       0.01(      0.01)         -3         -2          9         10
+1:powerlaw:PhoIndex>0.1
+              1       0.01(      0.01)          0          0      1e+20      1e+24
+2:powerlaw:norm>1
+
+========================================================================
+Model powerlaw<1> Source No.: 1   Active/Off
+Model Model Component  Parameter  Unit     Value
+ par  comp
+   1    1   powerlaw   PhoIndex            0.100000     +/-  0.0
+   2    1   powerlaw   norm                1.00000      +/-  0.0
+________________________________________________________________________
 ```
 
 Successful execution confirms that XSPEC libraries and Tcl/Tk integration function correctly on FreeBSD ARM64.
@@ -140,13 +169,14 @@ The Python interface `heasoftpy` was validated by importing the module in a Pyth
 Example command:
 
 ```
-python3 -c "import heasoftpy"
+python3 -c "import heasoftpy as hsp; print(f'heasoftpy version = {hsp.__version__}')"
 ```
 
 Output placeholder:
 
 ```
-[placeholder for Python test output]
+$ python3 -c "import heasoftpy as hsp; print(f'heasoftpy version = {hsp.__version__}')"
+heasoftpy version = 1.5
 ```
 
 This confirms that Python wrapper bindings to HEASoft tools are functional.
