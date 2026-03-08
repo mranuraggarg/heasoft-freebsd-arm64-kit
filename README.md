@@ -10,7 +10,7 @@ It contains:
 It intentionally does **not** contain the full HEASoft source tree.
 
 ## Tested environment
-- FreeBSD 15.0-CURRENT
+- FreeBSD 15.0-RELEASE
 - aarch64 / ARM64
 - Apple Silicon VM (UTM)
 - HEASoft 6.36
