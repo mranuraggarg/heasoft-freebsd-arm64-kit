@@ -72,9 +72,9 @@ The patch application process is automated through a helper script that applies 
 
 ## Environment Configuration
 
-Building HEASoft requires coordinating multiple toolchains including C, C++, and Fortran compilers, along with Tcl/Tk and Python environments.
+Building HEASoft requires coordinating multiple toolchains including C, C++, and Fortran compilers, along with Tcl/Tk and Python environments. In addition, HEASoft depends on external libraries including CFITSIO and CCfits, which must be installed prior to compilation.
 
-The environment configuration script defines the required paths and environment variables used during compilation. This ensures consistent build behavior across FreeBSD installations.
+The repository documentation provides step-by-step instructions for installing these dependencies and configuring the build environment. The included `heasoft_env.sh` script defines the compiler paths and runtime variables required for the HEASoft compilation step, ensuring consistent build behavior across FreeBSD installations.
 
 An additional configuration step ensures that the **XSPEC Tcl readline interface** loads correctly. Without this adjustment, XSPEC may fall back to a minimal interactive prompt.
 
