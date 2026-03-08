@@ -53,6 +53,18 @@ Steps used to validate the compiled HEASoft environment are provided in:
 
 `VALIDATION.md`
 
+## Quick Reproducibility Test
+
+A minimal validation of the HEASoft FreeBSD ARM64 build can be performed using the included smoke test.
+
+After building HEASoft:
+
+```bash
+cd examples
+chmod +x test_heasoft.sh
+./test_heasoft.sh
+```
+
 ## Known issues
 - XSPEC may fall back to `%` prompt unless `TCLLIBPATH` is set.
 - Some modules may require additional system libraries depending on HEASoft configuration.
