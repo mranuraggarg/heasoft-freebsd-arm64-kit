@@ -5,9 +5,10 @@ title: "Porting HEASoft to FreeBSD ARM64: A Reproducible Build Framework"
 authors:
   - name: Anurag Garg
     orcid: 0000-0001-9448-3960
-    affiliation: Ministry of Education, UAE
+    affiliation: 1
+
 affiliations:
-  - name: Independent Researcher
+  - name: Ministry of Education, UAE
     index: 1
 date: 7 Mar 2026
 bibliography: paper.bib
