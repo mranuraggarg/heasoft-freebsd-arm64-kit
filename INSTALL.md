@@ -39,8 +39,10 @@ pkg upgrade
 Install required build tools:
 
 ```sh
-pkg install git gmake gcc14 gfortran14 perl python3 pkgconf tcl86 tk86 tclreadline
+pkg install git gcc gmake perl5 python311 pkgconf tcl86 tk86 tclreadline
 ```
+
+`gcc` provides `gfortran`, so a separate `gfortran` package is not required.
 
 Install recommended runtime/UI dependencies (especially for XSPEC/Tk/X11 workflows):
 
@@ -53,6 +55,36 @@ Optional Python packages for `heasoftpy` workflows:
 ```sh
 pkg install py311-astropy py311-numpy py311-scipy py311-matplotlib
 ```
+
+## Install CCfits dependency
+
+Install `cfitsio` first (required by CCfits):
+
+```sh
+sudo pkg install cfitsio
+```
+
+Fetch and extract CCfits:
+
+```sh
+fetch https://heasarc.gsfc.nasa.gov/FTP/software/fitsio/ccfits/CCfits.tar.gz
+tar zxf CCfits.tar.gz
+```
+
+Build and install CCfits (example):
+
+```sh
+cd CCfits-2.7
+export CC=/usr/local/bin/gcc
+export CXX=/usr/local/bin/g++
+export FC=/usr/local/bin/gfortran
+export LD_LIBRARY_PATH=/usr/local/lib/gcc14
+./configure
+gmake
+gmake install
+```
+
+You can also follow regular upstream CCfits installation instructions if preferred.
 
 ## Download HEASoft source
 
@@ -106,5 +138,5 @@ Follow the standard HEASoft build procedure after patch application.
 
 Use:
 
-- `validation.md`
+- `VALIDATION.md`
 - `examples/test_heasoft.sh`

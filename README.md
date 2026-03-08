@@ -17,9 +17,10 @@ It intentionally does **not** contain the full HEASoft source tree.
 
 ## Prerequisites (FreeBSD host)
 - base tools: `git`, `gmake`, `perl`, `python3`, `pkgconf`
-- compilers: `gcc14`, `gfortran14`
+- compiler toolchain: `gcc` (includes `gfortran`)
 - Tcl/Tk stack for XSPEC: `tcl86`, `tk86`, `tclreadline`
 - recommended X11 runtime for GUI tools: `xorg`
+- CCfits dependency chain: install `cfitsio`, then build/install `CCfits`
 - some modules may require additional system libraries depending on build configuration
 
 ## Quick usage
@@ -50,7 +51,7 @@ environment (UTM + FreeBSD + HEASoft build) are provided in:
 
 Steps used to validate the compiled HEASoft environment are provided in:
 
-`validation.md`
+`VALIDATION.md`
 
 ## Known issues
 - XSPEC may fall back to `%` prompt unless `TCLLIBPATH` is set.
