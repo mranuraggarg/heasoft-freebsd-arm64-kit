@@ -24,13 +24,13 @@ The resulting workflow demonstrates that HEASoft can operate reliably on FreeBSD
 
 # Statement of Need
 
-HEASoft is an essential component of many high‑energy astrophysics data analysis pipelines. Tools such as XSPEC are widely used for spectral analysis of X‑ray observations from missions including *Chandra*, *XMM‑Newton*, *Swift*, and *NuSTAR* [@arnaud1996xspec].
+HEASoft is an essential software suite for the reduction and analysis of high-energy astrophysical data. Tools such as XSPEC are widely used for spectral analysis of X-ray observations from missions including *Chandra*, *XMM-Newton*, *Swift*, and *NuSTAR* [@arnaud1996xspec]. These tools form a core component of many astrophysical research pipelines.
 
-While HEASoft is designed to be portable, official build environments primarily target Linux and macOS. As a result, compiling HEASoft on other Unix‑like systems may require resolving undocumented platform‑specific issues.
+Although HEASoft is designed to be portable, official build environments primarily target Linux and macOS. As a result, researchers working on other Unix-like systems may encounter undocumented platform-specific issues when attempting to compile the software.
 
-FreeBSD is a mature Unix operating system known for its stability, security, and well‑maintained ports ecosystem. It is frequently used in research computing environments and infrastructure systems. At the same time, the increasing adoption of ARM64 hardware—including Apple Silicon systems and ARM‑based servers—makes it increasingly important for scientific software to remain portable across architectures.
+FreeBSD is a mature Unix operating system known for its stability, security, and well-maintained ports ecosystem. It is widely used in infrastructure systems and research computing environments. At the same time, the increasing adoption of ARM64 hardware—including Apple Silicon systems and ARM-based servers—makes cross-platform compatibility increasingly important for scientific software.
 
-Currently, there is limited documentation describing how HEASoft can be compiled successfully on FreeBSD ARM64. The goal of this project is to provide a reproducible patch‑based framework enabling such builds while preserving compatibility with the upstream HEASoft source distribution.
+At present, there is little documentation describing how HEASoft can be compiled successfully on FreeBSD ARM64 platforms. This project addresses that gap by providing a reproducible patch-based framework that enables HEASoft to be built and executed on FreeBSD ARM64 while preserving compatibility with the upstream HEASoft source distribution.
 
 # Software Description
 
