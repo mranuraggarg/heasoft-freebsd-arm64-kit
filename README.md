@@ -89,6 +89,22 @@ sudo pkg install py311-astropy py311-numpy py311-scipy py311-matplotlib
 ## Included patches
 See `patches/` for full list (0005 to 0028).
 
+## Citation
+
+If you use this work, please cite:
+
+Anurag Garg (2026).  
+*HEASoft FreeBSD ARM64 Porting Kit*.  
+Software documentation and build framework.  
+
+Repository: https://github.com/mranuraggarg/heasoft-freebsd-arm64-kit
+
+This project builds on NASA HEASoft. Please also cite:
+
+Arnaud, K. A. 1996.  
+XSPEC: The First Ten Years.  
+Astronomical Data Analysis Software and Systems V.
+
 ## License
 
 This repository contains patches and build scripts written by the author
