@@ -9,6 +9,24 @@ It contains:
 
 It intentionally does **not** contain the full HEASoft source tree.
 
+## Repository Structure
+
+```text
+heasoft-freebsd-arm64-kit/
+│
+├── patches/              FreeBSD ARM64 compatibility patches
+├── scripts/              Patch application helpers
+├── examples/             Validation smoke tests
+│   └── test_heasoft.sh
+│
+├── INSTALL.md            Full installation procedure
+├── VALIDATION.md         Expected validation outputs
+├── README.md             Project overview
+├── paper.md              Software paper (JOSS)
+├── paper.bib             Bibliography
+└── CITATION.cff          Citation metadata
+```
+
 ## Tested environment
 - FreeBSD 15.0-RELEASE
 - aarch64 / ARM64
