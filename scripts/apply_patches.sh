@@ -37,22 +37,23 @@ apply_0008_fallback() {
 
   tmp="${fp}.tmp.$$"
   if ! awk '
-    BEGIN { changed = 0 }
+    BEGIN { changed = 0; in_freebsd = 0 }
     {
       if ($0 == "#elif HAVE_FREEBSD_IEEE_INTERFACE") {
         print
-        if ((getline nextline) <= 0) {
-          exit 2
-        }
-        if (nextline ~ /^# if defined\(__i386__\)[[:space:]]*\|\|[[:space:]]*defined\(__x86_64__\)([[:space:]]*\|\|[[:space:]]*defined\(__amd64__\))?[[:space:]]*$/) {
-          print "# if defined(__aarch64__) || defined(__arm64__)"
-          print "#  include \"fp-gnuc99.c\""
-          print "# elif defined(__i386__) || defined(__x86_64__) || defined(__amd64__)"
-          changed = 1
-          next
-        }
-        print nextline
+        in_freebsd = 1
         next
+      }
+      if (in_freebsd == 1 && changed == 0 &&
+          $0 ~ /^# if[[:space:]]+defined\(__i386__\).*defined\(__x86_64__\)/) {
+        print "# if defined(__aarch64__) || defined(__arm64__)"
+        print "#  include \"fp-gnuc99.c\""
+        print "# elif defined(__i386__) || defined(__x86_64__) || defined(__amd64__)"
+        changed = 1
+        next
+      }
+      if (in_freebsd == 1 && $0 ~ /^#endif[[:space:]]*$/) {
+        in_freebsd = 0
       }
       print
     }
