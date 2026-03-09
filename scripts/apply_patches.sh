@@ -24,14 +24,19 @@ fi
 
 for p in "$patch_dir"/*.patch; do
   echo "Applying $(basename "$p")"
-  # -N: ignore already-applied hunks, -t: batch mode (no interactive prompts)
-  if ! (cd "$src_dir" && patch -N -t -p1 < "$p"); then
-    echo "Error: failed to apply $(basename "$p")" >&2
-    exit 1
-  fi
-  if find "$src_dir" -name '*.rej' -print -quit | grep -q .; then
-    echo "Error: reject file(s) found after $(basename "$p")" >&2
-    find "$src_dir" -name '*.rej' -print >&2
+  # Idempotent behavior:
+  #   1) if forward dry-run succeeds -> apply patch
+  #   2) else if reverse dry-run succeeds -> already applied, skip
+  #   3) else -> real conflict/failure
+  if (cd "$src_dir" && patch -p1 -t --dry-run < "$p" >/dev/null 2>&1); then
+    if ! (cd "$src_dir" && patch -p1 -t < "$p"); then
+      echo "Error: failed to apply $(basename "$p")" >&2
+      exit 1
+    fi
+  elif (cd "$src_dir" && patch -R -p1 -t --dry-run < "$p" >/dev/null 2>&1); then
+    echo "Skipping $(basename "$p") (already applied)"
+  else
+    echo "Error: patch cannot be applied cleanly: $(basename "$p")" >&2
     exit 1
   fi
 done
