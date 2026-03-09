@@ -36,12 +36,34 @@ apply_0008_fallback() {
   fi
 
   tmp="${fp}.tmp.$$"
-  if ! perl -0777 -pe '
-    s{(#elif HAVE_FREEBSD_IEEE_INTERFACE\s*\n)\s*# if defined\(__i386__\)\s*\|\|\s*defined\(__x86_64__\)(?:\s*\|\|\s*defined\(__amd64__\))?\s*\n\s*#  include "fp-freebsd\.c"}
-     {$1# if defined(__aarch64__) || defined(__arm64__)\n#  include "fp-gnuc99.c"\n# elif defined(__i386__) || defined(__x86_64__) || defined(__amd64__)\n#  include "fp-freebsd.c"}sex
+  if ! awk '
+    BEGIN { changed = 0 }
+    {
+      if ($0 == "#elif HAVE_FREEBSD_IEEE_INTERFACE") {
+        print
+        if ((getline nextline) <= 0) {
+          exit 2
+        }
+        if (nextline ~ /^# if defined\(__i386__\)[[:space:]]*\|\|[[:space:]]*defined\(__x86_64__\)([[:space:]]*\|\|[[:space:]]*defined\(__amd64__\))?[[:space:]]*$/) {
+          print "# if defined(__aarch64__) || defined(__arm64__)"
+          print "#  include \"fp-gnuc99.c\""
+          print "# elif defined(__i386__) || defined(__x86_64__) || defined(__amd64__)"
+          changed = 1
+          next
+        }
+        print nextline
+        next
+      }
+      print
+    }
+    END {
+      if (changed == 0) {
+        exit 3
+      }
+    }
   ' "$fp" > "$tmp"; then
     rm -f "$tmp"
-    echo "Error: perl fallback transform failed for $fp" >&2
+    echo "Error: awk fallback transform failed for $fp" >&2
     return 1
   fi
 
