@@ -22,63 +22,6 @@ if find "$src_dir" -name '*.rej' -print -quit | grep -q .; then
   exit 1
 fi
 
-apply_0008_fallback() {
-  fp="$src_dir/heacore/gsl/ieee-utils/fp.c"
-  if [ ! -f "$fp" ]; then
-    echo "Error: expected file not found for 0008 fallback: $fp" >&2
-    return 1
-  fi
-
-  # If arm64 path is already present, treat as already applied.
-  if grep -Eq '__aarch64__|__arm64__' "$fp"; then
-    echo "Skipping 0008-gsl-freebsd-prioritize-arm64-ieee-backend.patch (already applied)"
-    return 0
-  fi
-
-  tmp="${fp}.tmp.$$"
-  if ! awk '
-    BEGIN { changed = 0; in_freebsd = 0 }
-    {
-      if ($0 == "#elif HAVE_FREEBSD_IEEE_INTERFACE") {
-        print
-        in_freebsd = 1
-        next
-      }
-      if (in_freebsd == 1 && changed == 0 &&
-          $0 ~ /^# if[[:space:]]+defined\(__i386__\).*defined\(__x86_64__\)/) {
-        print "# if defined(__aarch64__) || defined(__arm64__)"
-        print "#  include \"fp-gnuc99.c\""
-        print "# elif defined(__i386__) || defined(__x86_64__) || defined(__amd64__)"
-        changed = 1
-        next
-      }
-      if (in_freebsd == 1 && $0 ~ /^#endif[[:space:]]*$/) {
-        in_freebsd = 0
-      }
-      print
-    }
-    END {
-      if (changed == 0) {
-        exit 3
-      }
-    }
-  ' "$fp" > "$tmp"; then
-    rm -f "$tmp"
-    echo "Error: awk fallback transform failed for $fp" >&2
-    return 1
-  fi
-
-  if cmp -s "$fp" "$tmp"; then
-    rm -f "$tmp"
-    echo "Error: 0008 fallback made no changes; fp.c layout not recognized" >&2
-    return 1
-  fi
-
-  mv "$tmp" "$fp"
-  echo "Applied 0008 fallback directly to heacore/gsl/ieee-utils/fp.c"
-  return 0
-}
-
 for p in "$patch_dir"/*.patch; do
   pbase="$(basename "$p")"
   echo "Applying ${pbase}"
@@ -93,11 +36,6 @@ for p in "$patch_dir"/*.patch; do
     fi
   elif (cd "$src_dir" && patch -R -p1 -t --dry-run < "$p" >/dev/null 2>&1); then
     echo "Skipping ${pbase} (already applied)"
-  elif [ "$pbase" = "0008-gsl-freebsd-prioritize-arm64-ieee-backend.patch" ]; then
-    if ! apply_0008_fallback; then
-      echo "Error: patch cannot be applied cleanly: ${pbase}" >&2
-      exit 1
-    fi
   else
     echo "Error: patch cannot be applied cleanly: ${pbase}" >&2
     exit 1
