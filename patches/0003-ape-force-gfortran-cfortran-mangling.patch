@@ -1,0 +1,28 @@
+diff --git a/heacore/ape/src/ape_trad.c b/heacore/ape/src/ape_trad.c
+index 01089f15..67e29624 100644
+--- a/heacore/ape/src/ape_trad.c
++++ b/heacore/ape/src/ape_trad.c
+@@ -19,6 +19,9 @@
+ #endif
+ 
+ #ifdef APE_COMPILE_FORTRAN_BINDINGS
++#ifndef gFortran
++#define gFortran
++#endif
+ #include "cfortran.h"
+ #endif
+ 
+diff --git a/heacore/ape/src/pil.c b/heacore/ape/src/pil.c
+index 79950618..ac6bb013 100644
+--- a/heacore/ape/src/pil.c
++++ b/heacore/ape/src/pil.c
+@@ -24,6 +24,9 @@
+ #endif
+ 
+ #ifdef APE_COMPILE_FORTRAN_BINDINGS
++#ifndef gFortran
++#define gFortran
++#endif
+ #include "cfortran.h"
+ #endif
+ 

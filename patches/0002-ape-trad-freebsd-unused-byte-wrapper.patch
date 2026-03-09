@@ -1,0 +1,20 @@
+diff --git a/heacore/ape/src/ape_trad.c b/heacore/ape/src/ape_trad.c
+index 984d7bc3..01089f15 100644
+--- a/heacore/ape/src/ape_trad.c
++++ b/heacore/ape/src/ape_trad.c
+@@ -332,8 +332,14 @@ FCALLSCFUN1(INT, ape_trad_close, APE_TRAD_CLOSE, ape_trad_close, INT)
+ 
+ FCALLSCFUN0(INT, ape_trad_save, APE_TRAD_SAVE, ape_trad_save)
+ 
++#if defined(__GNUC__) || defined(__clang__)
++#define APE_TRAD_UNUSED __attribute__((unused))
++#else
++#define APE_TRAD_UNUSED
++#endif
++
+ /* ape_trad_get_bool par_value is char, but cfortran has no char, only byte: */
+-static int ape_trad_get_byte(const char * par_name, signed char * par_value) {
++static int APE_TRAD_UNUSED ape_trad_get_byte(const char * par_name, signed char * par_value) {
+   char par_value_byte = 0;
+   int status = eOK;
+   if (0 == par_name || 0 == par_value) {

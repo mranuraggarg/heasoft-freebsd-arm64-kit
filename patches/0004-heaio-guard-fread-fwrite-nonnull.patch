@@ -1,0 +1,36 @@
+diff --git a/heacore/heaio/headas_stdio.c b/heacore/heaio/headas_stdio.c
+index c4fe977b..b83cf349 100644
+--- a/heacore/heaio/headas_stdio.c
++++ b/heacore/heaio/headas_stdio.c
+@@ -769,9 +769,13 @@ FCALLSCSUB2(headas_f77chat, HDCHAT, hdchat, INT, STRING)
+   size_t HD_fread(void * ptr, size_t size, size_t nmemb,
+       hd_FILE * theStream) {
+     size_t retval = 0u;
++    FILE * c_file = 0;
+     do {
+-      if(theStream && theStream->cxxStream);
+-      else retval = fread(ptr, size, nmemb, GetFilePtr(theStream));
++      if (0 == ptr) continue;
++      if(theStream && theStream->cxxStream) continue;
++      c_file = GetFilePtr(theStream);
++      if (0 == c_file) continue;
++      retval = fread(ptr, size, nmemb, c_file);
+     } while(0);
+     return retval;
+   }
+@@ -779,9 +783,13 @@ FCALLSCSUB2(headas_f77chat, HDCHAT, hdchat, INT, STRING)
+   size_t HD_fwrite(const void * ptr, size_t size, size_t nmemb,
+       hd_FILE * theStream) {
+     size_t retval = 0u;
++    FILE * c_file = 0;
+     do {
+-      if(theStream && theStream->cxxStream);
+-      else retval = fwrite(ptr, size, nmemb, GetFilePtr(theStream));
++      if (0 == ptr) continue;
++      if(theStream && theStream->cxxStream) continue;
++      c_file = GetFilePtr(theStream);
++      if (0 == c_file) continue;
++      retval = fwrite(ptr, size, nmemb, c_file);
+     } while(0);
+     return retval;
+   }
