@@ -20,8 +20,8 @@ export PATH="$HOME/bin:$PATH"
 # If you use wrapper scripts in ~/bin, keep CC/CXX as below.
 # If you do NOT use wrappers, replace CC/CXX with /usr/local/bin/gcc14 and g++14.
 # ==========================================================
-export CC="$HOME/bin/gcc14-heasoft"
-export CXX="$HOME/bin/g++14-heasoft"
+export CC="/usr/local/bin/gcc14"
+export CXX="/usr/local/bin/g++14"
 export FC=/usr/local/bin/gfortran14
 export F77=/usr/local/bin/gfortran14
 export MAKE=/usr/local/bin/gmake
