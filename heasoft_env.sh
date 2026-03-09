@@ -3,7 +3,7 @@
 # ==========================================================
 # HEASoft source + build tag (adjust if your path changes)
 # ==========================================================
-HEASOFT_SRC="/home/agarg/src/heasoft-6.36"
+HEASOFT_SRC="$HOME/src/heasoft-6.36"
 HEA_BLD_TAG="aarch64-unknown-freebsd15.0"
 
 HEA_HEACORE_LIB="${HEASOFT_SRC}/heacore/BLD/${HEA_BLD_TAG}/lib"
