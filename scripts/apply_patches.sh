@@ -16,7 +16,15 @@ fi
 
 for p in "$patch_dir"/*.patch; do
   echo "Applying $(basename "$p")"
-  (cd "$src_dir" && patch -p1 < "$p")
+  if ! (cd "$src_dir" && patch -p1 < "$p"); then
+    echo "Error: failed to apply $(basename "$p")" >&2
+    exit 1
+  fi
+  if find "$src_dir" -name '*.rej' -print -quit | grep -q .; then
+    echo "Error: reject file(s) found after $(basename "$p")" >&2
+    find "$src_dir" -name '*.rej' -print >&2
+    exit 1
+  fi
 done
 
 echo "Done."
